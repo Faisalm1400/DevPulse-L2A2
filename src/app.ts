@@ -5,6 +5,7 @@ import { authRouter } from "./modules/auth/auth.route";
 import config from "./config";
 import { initDB } from "./db";
 import CookieParser from "cookie-parser";
+import { issueRoute } from "./modules/issue/issue.route";
 
 const app: Application = express();
 
@@ -22,5 +23,6 @@ app.get("/", (req, res) => {
 });
 
 app.use(`${config.baseUrl}/auth`, authRouter);
+app.use(`${config.baseUrl}/issues`, issueRoute);
 
 export default app;
