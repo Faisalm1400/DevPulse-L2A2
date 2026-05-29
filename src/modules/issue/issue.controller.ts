@@ -1,8 +1,8 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { issueService } from "./issue.service";
 import sendResponse from "../../utils/sendResponse";
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = req.user;
 
@@ -21,17 +21,16 @@ const create = async (req: Request, res: Response) => {
       message: "Issue created successfully",
       data: result.rows[0],
     });
-  } catch (error: any) {
-    return sendResponse(res, {
-      statusCode: 500,
-      success: false,
-      message: error.message,
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const getAllIssues = async (req: Request, res: Response) => {
+const getAllIssues = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await issueService.getAllIssue();
 
@@ -41,22 +40,21 @@ const getAllIssues = async (req: Request, res: Response) => {
       message: "Issues retrieved successfully",
       data: result.rows,
     });
-  } catch (error: any) {
-    return sendResponse(res, {
-      statusCode: 500,
-      success: false,
-      message: error.message,
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const getSingleIssue = async (req: Request, res: Response) => {
+const getSingleIssue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { id } = req.params;
   try {
     const result = await issueService.getSingleIssue(id as string);
 
-    if (result.length === 0) {
+    if (!result) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,
@@ -71,17 +69,12 @@ const getSingleIssue = async (req: Request, res: Response) => {
       message: "Issue retrieved successfully",
       data: result,
     });
-  } catch (error: any) {
-    return sendResponse(res, {
-      statusCode: 500,
-      success: false,
-      message: error.message,
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const updateIssue = async (req: Request, res: Response) => {
+const updateIssue = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = req.user;
     const userId = user?.id;
@@ -119,10 +112,7 @@ const updateIssue = async (req: Request, res: Response) => {
 
     // console.log(updateData);
 
-    const result = await issueService.updateIssue(
-      id as string,
-      updateData,
-    );
+    const result = await issueService.updateIssue(id as string, updateData);
 
     // console.log("Result:", result);
 
@@ -132,17 +122,12 @@ const updateIssue = async (req: Request, res: Response) => {
       message: "Issue updated successfully",
       data: result,
     });
-  } catch (error: any) {
-    return sendResponse(res, {
-      statusCode: 500,
-      success: false,
-      message: error.message,
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const deleteIssue = async (req: Request, res: Response) => {
+const deleteIssue = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   try {
@@ -162,13 +147,8 @@ const deleteIssue = async (req: Request, res: Response) => {
       message: "Issue deleted successfully",
       data: {},
     });
-  } catch (error: any) {
-    return sendResponse(res, {
-      statusCode: 500,
-      success: false,
-      message: error.message,
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
