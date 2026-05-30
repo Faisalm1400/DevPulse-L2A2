@@ -50,8 +50,8 @@ A collaborative platform for software teams to report bugs, suggest features, an
 
 ### 1. Clone the repository
 ```bash
-git clone <your-repo-url>
-cd devpulse
+git clone https://github.com/Faisalm1400/DevPulse-L2A2.git
+cd DevPulse-L2A2
 npm install
 ```
 
