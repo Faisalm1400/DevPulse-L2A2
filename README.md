@@ -12,7 +12,7 @@ A collaborative platform for software teams to report bugs, suggest features, an
 
 ## Live Demo
 
-**Backend URL:** `https://placeholder.com`
+**Backend URL:** `https://dev-pulse-l2a2.vercel.app`
 
 ---
 
